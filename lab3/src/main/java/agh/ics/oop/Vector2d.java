@@ -1,14 +1,8 @@
-package oop;
+package agh.ics.oop;
 
 import java.util.Objects;
 
-public class Vector2d {
-    private final int x;
-    private final int y;
-    public Vector2d(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
+public record Vector2d(int x, int y) { //record
 
     @Override
     public String toString() {
@@ -21,6 +15,16 @@ public class Vector2d {
 
     public boolean follows(Vector2d other) {
         return (x >= other.x && y >= other.y);
+    }
+
+    @Override
+    public int x() {
+        return x;
+    }
+
+    @Override
+    public int y() {
+        return y;
     }
 
     public Vector2d add(Vector2d other) {
@@ -49,11 +53,11 @@ public class Vector2d {
         if (other == null || getClass() != other.getClass()) return false;
         Vector2d vector2d = (Vector2d) other;
         return x == vector2d.x && y == vector2d.y;
-        // return Integer.compare(that.x, this.x) == 0 && Integer.compare(that.y, this.y) == 0;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
     }
+
 }

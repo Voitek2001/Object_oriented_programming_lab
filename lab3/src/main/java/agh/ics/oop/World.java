@@ -1,4 +1,4 @@
-package oop;
+package agh.ics.oop;
 
 
 import java.util.Arrays;
@@ -7,7 +7,6 @@ public class World {
     public static void main(String[] args) {
         System.out.println("system wystartował");
 
-        System.out.println(new Integer(10) == new Integer(10));
         int length = args.length;
         int i, j = 0;
         MoveDirection[] instructions = new MoveDirection[length];
@@ -38,8 +37,12 @@ public class World {
         // process steps and print them
         run(Arrays.copyOfRange(instructions, 0, j));
 
-        //test MapDirection
-        // test toString method
+
+
+        // lab2
+
+//        test MapDirection
+//         test toString method
         for(MapDirection val : MapDirection.values()) {
             System.out.print(val + " ");
         }
@@ -59,6 +62,20 @@ public class World {
             System.out.print(val.toUnitVector() + " ");
         }
         System.out.println();
+
+        //lab3
+        Animal a = new Animal();
+        System.out.println(a.isAt(new Vector2d(2, 2)));
+
+        MoveDirection[] parsedDirections = OptionsParser.parse(args);
+        for (MoveDirection argument : parsedDirections) {
+            a.move(argument);
+            System.out.println(a);
+        }
+        //Odpowiedz na pytanie: jak zaimplementować mechanizm,
+        //który wyklucza pojawienie się dwóch zwierząt w tym samym miejscu.
+        //Stworzenie nowej klasy "map" trzymająca pozycje wszystkich zwierząt które istnieją(hash mape)
+
 
         System.out.println("system zakończył działanie");
     }
