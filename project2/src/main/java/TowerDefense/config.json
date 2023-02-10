@@ -10,14 +10,23 @@
   },
   "SimulationConfig" :
   {
-    "damageFromTowers": 20,
-    "towerRange": 5,
-    "startHPForCastle": 200,
-    "enemiesHP": 30,
-    "enemiesDamage": 20,
-    "wallHP": 60,
     "numberOfElements" : 10,
-    "castleHP": 1000
+
+    "damageFromTowers": 10,
+    "towerRange": 5,
+    "towerCost": 200,
+
+    "startHPForCastle": 200,
+    "castleHP": 1000,
+
+    "enemiesHP": 200,
+    "enemiesDamage": 20,
+    "enemyKillReward": 50,
+
+    "startGold": 1000,
+
+    "wallHP": 60,
+    "wallCost": 100
   }
 }
 

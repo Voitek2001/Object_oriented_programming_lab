@@ -1,6 +1,7 @@
 package TowerDefense.WorldMapComponents;
 
 
+import TowerDefense.GUI.App;
 import TowerDefense.Vector2d;
 import TowerDefense.WorldMapElements.EnemyUtils.Enemy;
 
@@ -12,11 +13,14 @@ public class EnemySpawner {
     private final AbstractWorldMap map;
     private final int attackPowerForEnemy;
     private final int enemyHP;
+    private final App app;
 
-    public EnemySpawner(AbstractWorldMap map, int attackPowerForEnemy, int enemyHP) {
+    public EnemySpawner(AbstractWorldMap map, int attackPowerForEnemy, int enemyHP, App app) {
         this.map = map;
         this.attackPowerForEnemy = attackPowerForEnemy;
         this.enemyHP = enemyHP;
+        this.app = app;
+
     }
 
     public void spawnEnemy() {
@@ -24,6 +28,7 @@ public class EnemySpawner {
         Vector2d newPosition = genNewPositionOnEdge();
         Enemy newEnemy = new Enemy(newPosition, this.map, this.attackPowerForEnemy, this.enemyHP);
         this.map.placeEnemy(newEnemy);
+        newEnemy.addStatusObserver(this.app);
     }
 
     private Vector2d genNewPositionOnEdge() {

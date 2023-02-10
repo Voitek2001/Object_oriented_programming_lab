@@ -2,7 +2,9 @@ package TowerDefense.GUI;
 
 import TowerDefense.Simulation.SimulationEngine;
 import TowerDefense.Vector2d;
+import TowerDefense.WorldMapComponents.IStatusObserver;
 import TowerDefense.WorldMapComponents.WorldMap;
+import TowerDefense.WorldMapElements.AbstractMapElementsWithHealth;
 import TowerDefense.WorldMapElements.Tower;
 import TowerDefense.WorldMapElements.Wall;
 import javafx.application.Application;
@@ -19,7 +21,7 @@ import org.json.JSONObject;
 import java.io.FileNotFoundException;
 
 
-public class App extends Application implements IRenderGridObserver, IElementToPlaceObserver {
+public class App extends Application implements IRenderGridObserver, IElementToPlaceObserver, IStatusObserver {
 
     private JSONObject appConfig;
     private JSONObject simulationConfig;
@@ -28,7 +30,7 @@ public class App extends Application implements IRenderGridObserver, IElementToP
     private GridPane grid;
     private Stage stage;
     private SimulationEngine engine;
-    private Thread engineThread;
+    private int gold; // consider moving gold var to simulationEngine
 
 
     private MenuBar menuBar;
@@ -50,8 +52,10 @@ public class App extends Application implements IRenderGridObserver, IElementToP
         this.map = new WorldMap(this.appConfig.getInt("numberOfElements"));
 
 
-        this.engine = new SimulationEngine(this.simulationConfig, this.map, 3000);
+        this.engine = new SimulationEngine(this.simulationConfig, this.map, 3000, this);
         this.engine.addObserver(this);
+
+        this.gold = this.simulationConfig.getInt("startGold");
 
     }
     @Override
@@ -63,7 +67,8 @@ public class App extends Application implements IRenderGridObserver, IElementToP
             System.exit(0);
         });
 
-        this.menuBar = new MenuBar(this.engineThread, this.engine);
+        this.menuBar = new MenuBar(this.engine, this.gold,
+                this.simulationConfig.getInt("towerCost"), this.simulationConfig.getInt("wallCost"));
         this.menuBar.addSelectedElementObserver(this);
 
         SplitPane splitPane = createSplitPane(createLeftGridPane(), this.menuBar.getRightPane());
@@ -109,11 +114,21 @@ public class App extends Application implements IRenderGridObserver, IElementToP
                 ((this.appConfig.getInt("heightOfScene")) / (this.appConfig.getInt("numberOfElements")));
 
         try {
-            if (this.selectedElementToPlace.equals(ObjectsToPlace.TOWER)) {
-                this.map.placeTowerAt(new Tower(new Vector2d(gridX, gridY), this.map, this.simulationConfig.getInt("damageFromTowers"), this.simulationConfig.getInt("towerRange")));
-            } else {
-                this.map.placeAt(new Wall(new Vector2d(gridX, gridY), this.map, this.simulationConfig.getInt("wallHP")));
+            switch (this.selectedElementToPlace) {
+                case WALL -> {
+                    if (this.gold >= this.simulationConfig.getInt("wallCost")) {
+                        this.map.placeAt(new Wall(new Vector2d(gridX, gridY), this.map, this.simulationConfig.getInt("wallHP")));
+                        this.gold -= this.simulationConfig.getInt("wallCost");
+                    }
+                }
+                case TOWER -> {
+                    if (this.gold >= this.simulationConfig.getInt("towerCost")) {
+                        this.map.placeTowerAt(new Tower(new Vector2d(gridX, gridY), this.map, this.simulationConfig.getInt("damageFromTowers"), this.simulationConfig.getInt("towerRange")));
+                        this.gold -= this.simulationConfig.getInt("towerCost");
+                    }
+                }
             }
+
         } catch (IllegalArgumentException e) {
             System.out.println("Obecne pole jest zajęte nie można na nim postawić kolejnego obiektu");
         }
@@ -123,7 +138,7 @@ public class App extends Application implements IRenderGridObserver, IElementToP
 
     private void clearAndGenerateNewGrid() throws FileNotFoundException {
         this.grid.getChildren().retainAll(grid.getChildren().get(0));
-        this.menuBar.createRightPane();
+        this.menuBar.createRightPane(this.gold);
         SplitPane splitPane = createSplitPane(createLeftGridPane(), this.menuBar.getRightPane());
         Scene scene = new Scene(splitPane, this.appConfig.getInt("widthOfScene"), this.appConfig.getInt("heightOfScene"));
         this.stage.setScene(scene);
@@ -134,7 +149,7 @@ public class App extends Application implements IRenderGridObserver, IElementToP
             this.grid.getChildren().retainAll(grid.getChildren().get(0));
             SplitPane splitPane;
             try {
-                this.menuBar.createRightPane();
+                this.menuBar.createRightPane(this.gold);
                 splitPane = createSplitPane(createLeftGridPane(), this.menuBar.getRightPane());
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
@@ -189,5 +204,11 @@ public class App extends Application implements IRenderGridObserver, IElementToP
     @Override
     public void selectedElementChanged(ObjectsToPlace objectsToPlace) {
         this.selectedElementToPlace = objectsToPlace;
+    }
+
+
+    @Override
+    public void die(AbstractMapElementsWithHealth element) {
+        this.gold += this.simulationConfig.getInt("enemyKillReward");
     }
 }

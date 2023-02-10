@@ -1,5 +1,7 @@
 package TowerDefense.Simulation;
 
+import TowerDefense.GUI.App;
+import TowerDefense.GUI.IGoldChangeObserver;
 import TowerDefense.GUI.IRenderGridObserver;
 import TowerDefense.Vector2d;
 import TowerDefense.WorldMapComponents.EnemySpawner;
@@ -12,6 +14,7 @@ import TowerDefense.WorldMapElements.Wall;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SimulationEngine implements IEngine, Runnable{
@@ -23,14 +26,17 @@ public class SimulationEngine implements IEngine, Runnable{
     private final Castle castle;
     private final List<IRenderGridObserver> renderGridObservers = new ArrayList<>();
 
+    private final List<IGoldChangeObserver> goldChangeObservers = new LinkedList<>();
 
-    public SimulationEngine(JSONObject simulationConfig, WorldMap map, int moveDelay) {
+
+
+    public SimulationEngine(JSONObject simulationConfig, WorldMap map, int moveDelay, App app) {
 
 
         this.map = map;
         this.simulationConfig = simulationConfig;
         this.moveDelay = moveDelay;
-        this.enemySpawner = new EnemySpawner(map, simulationConfig.getInt("enemiesDamage"), simulationConfig.getInt("enemiesHP"));
+        this.enemySpawner = new EnemySpawner(map, simulationConfig.getInt("enemiesDamage"), simulationConfig.getInt("enemiesHP"), app);
         //init castle here for more comfortable access
         this.castle = new Castle(new Vector2d(this.simulationConfig.getInt("numberOfElements") / 2,
                 this.simulationConfig.getInt("numberOfElements") / 2), this.map, this.simulationConfig.getInt("castleHP"));
@@ -101,8 +107,19 @@ public class SimulationEngine implements IEngine, Runnable{
         }
     }
 
+    public void enemyDied() {
+        for (IGoldChangeObserver observer: this.goldChangeObservers) {
+            observer.enemyDied();
+        }
+    }
+
     public void addObserver(IRenderGridObserver observer) {
         this.renderGridObservers.add(observer);
     }
+
+    public void addGoldObserver(IGoldChangeObserver observer) {
+        this.goldChangeObservers.add(observer);
+    }
+
 
 }

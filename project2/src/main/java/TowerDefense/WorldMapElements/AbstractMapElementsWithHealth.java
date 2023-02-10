@@ -51,6 +51,7 @@ public abstract class AbstractMapElementsWithHealth extends AbstractMapElements{
             for (IStatusObserver observer: this.statusObservers) {
                 observer.die(this);
             }
+
         }
     }
 }
