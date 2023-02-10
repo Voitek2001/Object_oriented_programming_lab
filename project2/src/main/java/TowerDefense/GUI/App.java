@@ -188,7 +188,7 @@ public class App extends Application implements IRenderGridObserver, IElementToP
                 this.map.objectAt(position).ifPresent(
                         (value) -> {
                             GuiElementBox guiElementBox = new GuiElementBox(value, this.appConfig.getString("resourcesPath"),
-                                    70 , 70);
+                                    60 , 60);
                             VBox guiElement = guiElementBox.getGUIElement();
                             GridPane.setHalignment(guiElement, HPos.CENTER);
                             this.grid.add(guiElement, finalX - lowerLeftX, upperRightY - finalY - 1, 1, 1);

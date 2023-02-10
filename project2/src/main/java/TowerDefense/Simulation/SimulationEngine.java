@@ -1,20 +1,17 @@
 package TowerDefense.Simulation;
 
 import TowerDefense.GUI.App;
-import TowerDefense.GUI.IGoldChangeObserver;
 import TowerDefense.GUI.IRenderGridObserver;
 import TowerDefense.Vector2d;
 import TowerDefense.WorldMapComponents.EnemySpawner;
 import TowerDefense.WorldMapComponents.WorldMap;
 import TowerDefense.WorldMapElements.Castle;
 import TowerDefense.WorldMapElements.ElementStatus;
-import TowerDefense.WorldMapElements.EnemyUtils.Enemy;
 import TowerDefense.WorldMapElements.Tower;
 import TowerDefense.WorldMapElements.Wall;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class SimulationEngine implements IEngine, Runnable{
@@ -25,8 +22,6 @@ public class SimulationEngine implements IEngine, Runnable{
     private final EnemySpawner enemySpawner;
     private final Castle castle;
     private final List<IRenderGridObserver> renderGridObservers = new ArrayList<>();
-
-    private final List<IGoldChangeObserver> goldChangeObservers = new LinkedList<>();
 
 
 
@@ -107,19 +102,8 @@ public class SimulationEngine implements IEngine, Runnable{
         }
     }
 
-    public void enemyDied() {
-        for (IGoldChangeObserver observer: this.goldChangeObservers) {
-            observer.enemyDied();
-        }
-    }
-
     public void addObserver(IRenderGridObserver observer) {
         this.renderGridObservers.add(observer);
     }
-
-    public void addGoldObserver(IGoldChangeObserver observer) {
-        this.goldChangeObservers.add(observer);
-    }
-
 
 }
