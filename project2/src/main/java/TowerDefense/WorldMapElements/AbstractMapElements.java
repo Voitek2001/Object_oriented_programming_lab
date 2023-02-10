@@ -6,7 +6,6 @@ public abstract class AbstractMapElements implements IMapElement{
     protected Vector2d position;
     protected AbstractWorldMap map;
 
-    protected ElementStatus status;
 
     @Override
     public Vector2d getPosition() {
@@ -14,13 +13,7 @@ public abstract class AbstractMapElements implements IMapElement{
     }
     public abstract String getPathToImage();
 
-    public void setStatus(ElementStatus newStatus) {
-        this.status = newStatus;
-    }
 
-    public ElementStatus getStatus() {
-        return this.status;
-    }
 
 
 

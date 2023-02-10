@@ -1,8 +1,9 @@
-package TowerDefense.WorldMapComponents;
+package TowerDefense.Simulation;
 
 
 import TowerDefense.GUI.App;
 import TowerDefense.Vector2d;
+import TowerDefense.WorldMapComponents.AbstractWorldMap;
 import TowerDefense.WorldMapElements.EnemyUtils.Enemy;
 
 import java.util.Random;

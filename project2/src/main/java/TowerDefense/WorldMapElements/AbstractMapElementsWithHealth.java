@@ -13,6 +13,8 @@ public abstract class AbstractMapElementsWithHealth extends AbstractMapElements{
     protected int HP;
     protected int maxHP;
 
+    protected ElementStatus status;
+
     public void addHealthObserver(IHealthObserver observer) {
         this.healthObservers.add(observer);
     }
@@ -53,5 +55,13 @@ public abstract class AbstractMapElementsWithHealth extends AbstractMapElements{
             }
 
         }
+    }
+
+    public void setStatus(ElementStatus newStatus) {
+        this.status = newStatus;
+    }
+
+    public ElementStatus getStatus() {
+        return this.status;
     }
 }

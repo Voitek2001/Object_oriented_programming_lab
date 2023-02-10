@@ -16,7 +16,6 @@ public class Tower extends AbstractMapElements implements IMapElement {
         this.map = map;
         this.attackPower = attackPower;
         this.attackRange = attackRange;
-        this.status = ElementStatus.ALIVE;
     }
 
     @Override

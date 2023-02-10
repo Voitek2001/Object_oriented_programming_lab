@@ -8,7 +8,7 @@ import java.util.*;
 
 public class AbstractWorldMap implements IHealthObserver, IPositionChangedObserver, IStatusObserver, IWorldMap {
 
-    private final List<Enemy> enemyList = new ArrayList<>(); // only enemy are move able, but Abstract is used for future modifications
+    private final List<Enemy> enemyList = new ArrayList<>();
     private final HashMap<Vector2d, AbstractMapElements> objectsPosition = new HashMap<>();
     private final List<Tower> towerList = new LinkedList<>();
     private final Bound bounds;

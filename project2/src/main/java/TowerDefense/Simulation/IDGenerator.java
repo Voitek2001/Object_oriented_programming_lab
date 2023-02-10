@@ -1,4 +1,4 @@
-package TowerDefense.WorldMapComponents;
+package TowerDefense.Simulation;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

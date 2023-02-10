@@ -3,14 +3,11 @@ package TowerDefense.WorldMapElements.EnemyUtils;
 import TowerDefense.Simulation.EnemyActionStatus;
 import TowerDefense.Vector2d;
 import TowerDefense.WorldMapComponents.AbstractWorldMap;
-import TowerDefense.WorldMapComponents.IDGenerator;
+import TowerDefense.Simulation.IDGenerator;
 import TowerDefense.WorldMapElements.AbstractMoveableMapElements;
 import TowerDefense.WorldMapElements.ElementStatus;
 import TowerDefense.WorldMapElements.IMapElement;
-import TowerDefense.WorldMapElements.Tower;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
 public class Enemy extends AbstractMoveableMapElements implements IMapElement {

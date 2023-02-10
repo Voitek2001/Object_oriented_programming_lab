@@ -3,7 +3,6 @@ package TowerDefense.Simulation;
 import TowerDefense.GUI.App;
 import TowerDefense.GUI.IRenderGridObserver;
 import TowerDefense.Vector2d;
-import TowerDefense.WorldMapComponents.EnemySpawner;
 import TowerDefense.WorldMapComponents.WorldMap;
 import TowerDefense.WorldMapElements.Castle;
 import TowerDefense.WorldMapElements.ElementStatus;
@@ -17,7 +16,6 @@ import java.util.List;
 public class SimulationEngine implements IEngine, Runnable{
 
     private final int moveDelay;
-    private final JSONObject simulationConfig;
     private final WorldMap map;
     private final EnemySpawner enemySpawner;
     private final Castle castle;
@@ -29,12 +27,11 @@ public class SimulationEngine implements IEngine, Runnable{
 
 
         this.map = map;
-        this.simulationConfig = simulationConfig;
         this.moveDelay = moveDelay;
         this.enemySpawner = new EnemySpawner(map, simulationConfig.getInt("enemiesDamage"), simulationConfig.getInt("enemiesHP"), app);
         //init castle here for more comfortable access
-        this.castle = new Castle(new Vector2d(this.simulationConfig.getInt("numberOfElements") / 2,
-                this.simulationConfig.getInt("numberOfElements") / 2), this.map, this.simulationConfig.getInt("castleHP"));
+        this.castle = new Castle(new Vector2d(simulationConfig.getInt("numberOfElements") / 2,
+                simulationConfig.getInt("numberOfElements") / 2), this.map, simulationConfig.getInt("castleHP"));
         this.map.placeAt(this.castle);
     }
 
@@ -83,7 +80,7 @@ public class SimulationEngine implements IEngine, Runnable{
         this.map.getEnemyList().forEach((enemy) -> {
             Vector2d nextPos = enemy.prepNextMove();
             switch (enemy.getEnemyActionStatus()) {
-                case DESTROYINGCASTLE -> this.castle.changeHealth(this.simulationConfig.getInt("enemiesDamage"));
+                case DESTROYINGCASTLE -> this.castle.changeHealth(enemy.getAttackPower());
                 case DESTROYINGWALL -> {
                     if (!enemy.tryToFindNewPathUsingIntuition()) {
                         Wall wall = (Wall) this.map.objectAt(nextPos).get();

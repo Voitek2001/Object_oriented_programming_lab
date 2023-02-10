@@ -6,7 +6,7 @@ import TowerDefense.WorldMapComponents.IPositionChangedObserver;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class AbstractMoveableMapElements extends AbstractMapElementsWithHealth implements IMapElement{
+public abstract class AbstractMoveableMapElements extends AbstractMapElementsWithHealth {
     protected List<IPositionChangedObserver> positionObservers = new LinkedList<>();
 
     public void addPositionObserver(IPositionChangedObserver observer) {
