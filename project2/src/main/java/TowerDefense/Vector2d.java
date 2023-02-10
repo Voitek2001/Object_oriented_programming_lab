@@ -10,7 +10,7 @@ public record Vector2d(int x, int y) { //record
     }
 
     public boolean precedes(Vector2d other) {
-        return (x <= other.x && y <= other.y);
+        return (x < other.x && y < other.y);
     }
 
     public boolean follows(Vector2d other) {
@@ -45,6 +45,10 @@ public record Vector2d(int x, int y) { //record
 
     public Vector2d opposite() {
         return new Vector2d(-x, -y);
+    }
+
+    public Integer getManhattanDist(Vector2d other) {
+        return Math.abs(other.x - x) + Math.abs(other.y - y);
     }
 
     @Override

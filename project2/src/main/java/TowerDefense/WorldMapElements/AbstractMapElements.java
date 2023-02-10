@@ -1,19 +1,27 @@
 package TowerDefense.WorldMapElements;
-
 import TowerDefense.Vector2d;
+import TowerDefense.WorldMapComponents.AbstractWorldMap;
 
-import java.util.LinkedList;
-import java.util.List;
-
-abstract class AbstractMapElements {
-
+public abstract class AbstractMapElements implements IMapElement{
     protected Vector2d position;
-    protected List<IHealthObserver> healthObservers = new LinkedList<>();
+    protected AbstractWorldMap map;
 
-    public void addHealthObserver(IHealthObserver observer) {
-        this.healthObservers.add(observer);
+    protected ElementStatus status;
+
+    @Override
+    public Vector2d getPosition() {
+        return this.position;
     }
-    public void removeHealthObserver(IHealthObserver observer) {
-        this.healthObservers.remove(observer);
+    public abstract String getPathToImage();
+
+    public void setStatus(ElementStatus newStatus) {
+        this.status = newStatus;
     }
+
+    public ElementStatus getStatus() {
+        return this.status;
+    }
+
+
+
 }
